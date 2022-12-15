@@ -16,7 +16,8 @@ public class TcpServer {
 		
 		final int SERVER_PORT=8765;
 		String clientMsg = "";
-		
+		String ridaBody =" ";
+
 		try {			 
 			// Creazione del socket sul server e ascolto sulla porta
 			ServerSocket serverSocket = new ServerSocket(SERVER_PORT);
@@ -35,17 +36,26 @@ public class TcpServer {
 				// ---------------------------------------------------------
 				//Lettura dati dal client un righa alla volta   
 				while ((clientMsg=inStream.readLine()).length() != 0) {
-					System.out.println(clientMsg);	
-				}  
+					System.out.println(clientMsg);
+
+				if(clientMsg.contains("GET /Accendi")){
+					ridaBody = "Ok. Accendo ";
+				}else if(clientMsg.contains("GET /Spegni ")){
+				  ridaBody = "Ok. Spengo .";
+				}
+
+				}
+				
 				// Elaborare qui i dati ricevuti dal client 
 				// ---------------------------------------------------------
 
 				//Invio dei dati su stream di rete al client
 				clientMsg = "HTTP/1.1 200 OK\r\n";
 				//clientMsg += "Connection: close\r\n";
-				//clientMsg += "Content-Type: text/plain\r\n";
+				clientMsg += "Content-Type: text/html\r\n";
 				clientMsg += "\r\n";
-				clientMsg += "Saluti dal web server Java";
+				clientMsg += "Saluti dal vostro caro rachid :) <br>";
+				clientMsg += ridaBody;
 				outStream.write(clientMsg.getBytes());
 				outStream.flush();
 
@@ -64,3 +74,4 @@ public class TcpServer {
 		}
 	}
 }
+Footer
